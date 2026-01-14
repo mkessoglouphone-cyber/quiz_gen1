@@ -1,0 +1,88 @@
+# ============================================
+# Quiz Generator - Default Configuration
+# Version: 4.1
+# ============================================
+
+# === QUIZ METADATA ===
+quiz:
+  title: "Quiz"
+  subject: ""
+  chapter: ""
+  class: ""
+  author: ""
+  date: ""  # auto = current date
+  time_limit: 20  # minutes, 0 = no limit
+
+# === QUIZ BEHAVIOR ===
+behavior:
+  shuffle_questions: false
+  shuffle_answers: false
+  passing_score: 50
+  show_explanations: "after_submit"  # never | after_submit | always
+  allow_review: true
+
+# === RESULT BUTTONS ===
+# Control which buttons appear after quiz submission
+buttons:
+  review: true        # 🔍 Επισκόπηση
+  print: true         # 🖨️ Εκτύπωση
+  pdf: true           # 📄 PDF
+  markdown: true      # 📝 Markdown
+  email: true         # 📧 Email
+  drive: true         # ☁️ Google Drive
+  docs: true          # 📑 Google Docs
+  restart: true       # 🔄 Ξανά
+
+# === EXTERNAL SERVICES ===
+services:
+  ide_url: "https://glot.io/new/python"
+  email: ""
+  share_folder: ""      # Google Drive folder URL
+  google_docs: ""       # Google Docs URL for results
+
+# === BOOK REFERENCE ===
+book:
+  pdf_path: ""          # e.g., "./books/textbook.pdf"
+  title: ""
+
+# === STUDENT LISTS ===
+# Pre-defined lists for dropdowns
+students: []
+classes: []
+
+# === CODE HIGHLIGHTING ===
+code:
+  default_language: "python"
+  highlight_theme: "atom-one-dark"  # atom-one-dark | atom-one-light | github | monokai
+  show_line_numbers: false
+
+# === OUTPUT SETTINGS ===
+output:
+  embed_css: false      # If true, embed CSS in HTML (not recommended)
+  embed_js: false       # If true, embed JS in HTML (not recommended)
+  css_file: "quiz-interactive.css"
+  js_file: "quiz-core.js"
+  minify: false
+
+# === THEME ===
+theme:
+  default: "dark"       # dark | light
+  allow_toggle: true
+
+# === LOCALIZATION ===
+locale:
+  language: "el"        # el = Greek, en = English
+  date_format: "DD/MM/YYYY"
+
+# === MOODLE SETTINGS (for future generator) ===
+moodle:
+  category: ""
+  default_grade: 1
+  penalty: 0.3333333
+  tags: []
+
+# === LOGGING ===
+logging:
+  level: "INFO"         # DEBUG | INFO | WARNING | ERROR
+  file: "quiz_generator.log"
+  console: true

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="el" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Εισαγωγή στην Python</title>
+  
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  
+  <!-- Highlight.js for Code -->
+  <link id="hljs-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+  <link id="hljs-light" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-light.min.css" disabled>
+  
+  <!-- Quiz CSS -->
+  <link rel="stylesheet" href="quiz-interactive.css">
+</head>
+<body data-ide-url="https://www.online-python.com/" data-email="teacher@school.gr" data-share-folder="https://drive.google.com/drive/folders/1ABC123example" data-google-docs="https://docs.google.com/document/d/1XYZ789example/edit" data-book-pdf="./books/pliroforiki_b_lykeiou.pdf" data-default-date="2026-01-14">
+
+  <div class="quiz-container" id="quizContainer">
+    
+    <div class="top-controls">
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" data-view="all" onclick="setViewMode('all')">📋 Όλες</button>
+        <button class="view-toggle-btn" data-view="single" onclick="setViewMode('single')">1️⃣ Μία-μία</button>
+      </div>
+      
+      <div class="timer" id="timerContainer">
+        <span>⏱️</span>
+        <span id="timer-display">25:00</span>
+      </div>
+      
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+    
+    <div class="student-info" id="studentInfo">
+      <div class="student-info-title">👤 Στοιχεία Μαθητή</div>
+      <div class="student-info-grid">
+        <div class="student-field">
+          <label class="student-field-label">Ονοματεπώνυμο</label>
+          <select id="studentName" onchange="handleCustomSelect(this, 'studentNameCustom')">
+            <option value="">-- Επιλέξτε --</option>
+            <option value="Αντωνίου Μαρία">Αντωνίου Μαρία</option>
+            <option value="Γεωργίου Νίκος">Γεωργίου Νίκος</option>
+            <option value="Δημητρίου Ελένη">Δημητρίου Ελένη</option>
+            <option value="Παπαδοπούλου Άννα">Παπαδοπούλου Άννα</option>
+            <option value="__custom__">Άλλο...</option>
+          </select>
+          <div class="custom-input-wrapper" id="studentNameCustomWrapper">
+            <input type="text" id="studentNameCustom" placeholder="Γράψτε το όνομά σας">
+          </div>
+        </div>
+        
+        <div class="student-field">
+          <label class="student-field-label">Τμήμα</label>
+          <select id="studentClass" onchange="handleCustomSelect(this, 'studentClassCustom')">
+            <option value="">-- Επιλέξτε --</option>
+            <option value="Β1">Β1</option>
+            <option value="Β2">Β2</option>
+            <option value="Β3">Β3</option>
+            <option value="__custom__">Άλλο...</option>
+          </select>
+          <div class="custom-input-wrapper" id="studentClassCustomWrapper">
+            <input type="text" id="studentClassCustom" placeholder="Γράψτε το τμήμα">
+          </div>
+        </div>
+        
+        <div class="student-field">
+          <label class="student-field-label">Ημερομηνία</label>
+          <select id="dateSelect" onchange="handleDateSelect()">
+            <option value="current">Τρέχουσα</option>
+            <option value="custom">Επιλογή...</option>
+          </select>
+          <div class="custom-input-wrapper" id="dateCustomWrapper">
+            <input type="datetime-local" id="dateCustom">
+          </div>
+        </div>
+        
+        <div class="student-field">
+          <label class="student-field-label">Κλίμακα Βαθμού</label>
+          <select id="gradeScale">
+            <option value="10">0-10</option>
+            <option value="20" selected>0-20</option>
+            <option value="100">0-100</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="quiz-header">
+      <h1 class="quiz-title">📝 Εισαγωγή στην Python</h1>
+      <div class="quiz-meta">
+        <span class="subject">📚 Πληροφορική Β&#x27; Λυκείου</span>
+        <span class="questions">📝 <span id="totalQ">11</span> ερωτήσεις</span>
+        <span class="points">⭐ <span id="totalPoints">23.0</span> βαθμοί</span>
+      </div>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-info">
+        <span>Ερώτηση <span id="currentQ">1</span>/<span id="totalQNav">11</span></span>
+        <span id="answeredCount">0 απαντημένες</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    <div class="section-header" id="section_1">
+      <h2 class="section-title">📖 Ενότητα 1: Βασικές Έννοιες</h2>
+    </div>
+
+<div class="question-card" id="q1" data-type="single" data-points="1.0" data-correct="B" data-feedback-positive="Σωστά! Η `print()` είναι η βασική συνάρτηση εξόδου της Python." data-feedback-negative="Λάθος. Η `echo` είναι για PHP, η `console.log()` για JavaScript.">
+      <div class="question-header">
+        <span class="question-number">1</span>
+        <span class="question-type">Μίας επιλογής</span>
+        <span class="question-points">1.0 βαθμός</span>
+      </div>
+      <div class="question-text"><p>Ποια είναι η σωστή σύνταξη για εκτύπωση στην Python;</p><p>---</p></div>
+      
+      
+      <ul class="answers-list">
+        <li class="answer-option" data-type="single">
+          <input type="radio" name="q1" id="q1a" value="A">
+          <label class="answer-label" for="q1a">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>echo "Hello"</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q1" id="q1b" value="B">
+          <label class="answer-label" for="q1b">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>print("Hello")</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q1" id="q1c" value="C">
+          <label class="answer-label" for="q1c">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>console.log("Hello")</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q1" id="q1d" value="D">
+          <label class="answer-label" for="q1d">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>System.out.println("Hello")</code></span>
+          </label>
+        </li>
+      </ul>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q1-theory')">📚 Θεωρία</button>
+<button class="helper-btn" onclick="togglePanel('q1-hint')">💡 Υπόδειξη</button>
+<button class="helper-btn" onclick="togglePanel('q1-book')">📖 Βιβλίο</button>
+<button class="helper-btn" onclick="togglePanel('q1-explore')">🔗 Explore</button>
+      </div>
+      <div class="panel panel-theory" id="q1-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+Κάθε γλώσσα προγραμματισμού έχει τη δική της συνάρτηση εξόδου:
+- <strong>Python:</strong> <code>print()</code>
+- <strong>JavaScript:</strong> <code>console.log()</code>
+- <strong>PHP:</strong> <code>echo</code>
+- <strong>Java:</strong> <code>System.out.println()</code>
+        </div>
+      </div>
+<div class="panel panel-hint" id="q1-hint" style="display:none">
+        <div class="panel-content">
+          💡 <strong>Υπόδειξη:</strong> Η Python χρησιμοποιεί μια απλή, ευανάγνωστη συνάρτηση. Σκέψου τη λέξη "εκτύπωση" στα αγγλικά!
+        </div>
+      </div>
+<div class="panel panel-book" id="q1-book" style="display:none">
+        <div class="panel-content">
+          <h4>📖 Αναφορά Βιβλίου</h4>
+<p><strong>Πληροφορική Β&#x27; Λυκείου</strong></p>
+<p>Κεφάλαιο 2 - Εισαγωγή στην Python</p>
+<p>Ενότητα 2.3 - Συναρτήσεις Εισόδου/Εξόδου</p>
+<p class="book-pages">
+            <a href="./books/pliroforiki_b_lykeiou.pdf#page=45" target="_blank" class="book-link">
+              📄 Σελίδες 45-48 → Άνοιγμα PDF
+            </a>
+          </p>
+        </div>
+      </div>
+<div class="panel panel-explore" id="q1-explore" style="display:none">
+        <div class="panel-content">
+          <h4>🔗 Εξερεύνησε περισσότερα</h4>
+          <ul>
+            <li><a href="https://docs.python.org/3/library/functions.html#print" target="_blank">Python print() documentation</a></li>
+<li><a href="https://www.w3schools.com/python/ref_func_print.asp" target="_blank">W3Schools - Python print()</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q2" data-type="single" data-points="2.0" data-correct="A">
+      <div class="question-header">
+        <span class="question-number">2</span>
+        <span class="question-type">Μίας επιλογής</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Παρατήρησε το λογότυπο της Python:</p><p>Τι είδους γλώσσα προγραμματισμού είναι η Python;</p><p>---</p></div>
+      <figure class="question-image">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/200px-Python-logo-notext.svg.png" alt="Python Logo" style="max-width: 150px;">
+        <figcaption>Το επίσημο λογότυπο της Python</figcaption>
+      </figure>
+      
+      <ul class="answers-list">
+        <li class="answer-option" data-type="single">
+          <input type="radio" name="q2" id="q2a" value="A">
+          <label class="answer-label" for="q2a">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Interpreted (Διερμηνευόμενη)</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q2" id="q2b" value="B">
+          <label class="answer-label" for="q2b">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Compiled (Μεταγλωττιζόμενη)</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q2" id="q2c" value="C">
+          <label class="answer-label" for="q2c">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Assembly</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q2" id="q2d" value="D">
+          <label class="answer-label" for="q2d">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Machine Code</span>
+          </label>
+        </li>
+      </ul>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q2-image')">🖼️ Εικόνα</button>
+<button class="helper-btn" onclick="togglePanel('q2-theory')">📚 Θεωρία</button>
+<button class="helper-btn" onclick="togglePanel('q2-hint')">💡 Υπόδειξη</button>
+      </div>
+      <div class="panel panel-image" id="q2-image" style="display:none">
+        <div class="panel-content">
+          <figure style="text-align: center;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/200px-Python-logo-notext.svg.png" alt="Python Logo" style="max-width: 150px; border-radius: 8px;">
+            <figcaption style="color: var(--text-secondary); margin-top: 8px;">Το επίσημο λογότυπο της Python</figcaption>
+          </figure>
+        </div>
+      </div>
+<div class="panel panel-theory" id="q2-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+Οι γλώσσες προγραμματισμού χωρίζονται σε:
+- <strong>Διερμηνευόμενες (Interpreted):</strong> Ο κώδικας εκτελείται γραμμή-γραμμή (Python, JavaScript, PHP)
+- <strong>Μεταγλωττιζόμενες (Compiled):</strong> Ο κώδικας μετατρέπεται σε εκτελέσιμο πριν την εκτέλεση (C, C++, Java)
+        </div>
+      </div>
+<div class="panel panel-hint" id="q2-hint" style="display:none">
+        <div class="panel-content">
+          💡 <strong>Υπόδειξη:</strong> Η Python δεν χρειάζεται compilation πριν την εκτέλεση.
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q3" data-type="single" data-points="2.0" data-correct="B">
+      <div class="question-header">
+        <span class="question-number">3</span>
+        <span class="question-type">Μίας επιλογής</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Παρακολούθησε το εισαγωγικό βίντεο:</p><p>Ποιο είναι το πρώτο βήμα για να ξεκινήσεις με Python;</p><p>---</p></div>
+      <div class="question-video">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/kqtD5dpn9C8" title="Python Tutorial for Beginners" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+        </div>
+        <div class="video-title">📹 Python Tutorial for Beginners</div>
+      </div>
+      
+      <ul class="answers-list">
+        <li class="answer-option" data-type="single">
+          <input type="radio" name="q3" id="q3a" value="A">
+          <label class="answer-label" for="q3a">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Να μάθεις C++ πρώτα</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q3" id="q3b" value="B">
+          <label class="answer-label" for="q3b">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Να εγκαταστήσεις την Python</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q3" id="q3c" value="C">
+          <label class="answer-label" for="q3c">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Να αγοράσεις ειδικό hardware</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q3" id="q3d" value="D">
+          <label class="answer-label" for="q3d">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Να μάθεις μαθηματικά</span>
+          </label>
+        </li>
+      </ul>
+      
+    </div>
+
+<div class="question-card" id="q4" data-type="single" data-points="2.0" data-correct="C">
+      <div class="question-header">
+        <span class="question-number">4</span>
+        <span class="question-type">Μίας επιλογής</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Μελέτησε την τεκμηρίωση της tkinter:</p><p>Η tkinter χρησιμοποιείται για:</p><p>---</p></div>
+      <div class="question-embed">
+        <div class="embed-header">
+          🔗 <a href="https://docs.python.org/3/library/tkinter.html" target="_blank">https://docs.python.org/3/library/tkinter.html</a>
+        </div>
+        <div class="embed-wrapper">
+          <iframe src="https://docs.python.org/3/library/tkinter.html" title="tkinter Documentation" style="height: 400px;"></iframe>
+        </div>
+      </div>
+      
+      <ul class="answers-list">
+        <li class="answer-option" data-type="single">
+          <input type="radio" name="q4" id="q4a" value="A">
+          <label class="answer-label" for="q4a">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Επεξεργασία εικόνας</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q4" id="q4b" value="B">
+          <label class="answer-label" for="q4b">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Machine Learning</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q4" id="q4c" value="C">
+          <label class="answer-label" for="q4c">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Δημιουργία γραφικών διεπαφών (GUI)</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q4" id="q4d" value="D">
+          <label class="answer-label" for="q4d">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Web Development</span>
+          </label>
+        </li>
+      </ul>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q4-theory')">📚 Θεωρία</button>
+      </div>
+      <div class="panel panel-theory" id="q4-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+<strong>tkinter</strong> είναι η standard Python βιβλιοθήκη για δημιουργία GUI (Graphical User Interface).
+Παρέχει widgets όπως buttons, labels, text boxes, menus κ.α.
+        </div>
+      </div>
+    </div>
+
+<div class="section-header" id="section_2">
+      <h2 class="section-title">📖 Ενότητα 2: Κώδικας Python</h2>
+    </div>
+
+<div class="question-card" id="q5" data-type="single" data-points="2.0" data-correct="B">
+      <div class="question-header">
+        <span class="question-number">5</span>
+        <span class="question-type">Μίας επιλογής</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Τι θα εμφανίσει ο παρακάτω κώδικας;</p><p>---</p></div>
+      
+      <pre><code class="language-python"># Υπολογισμός αθροίσματος
+numbers = [1, 2, 3, 4, 5]
+total = sum(numbers)
+print(f&quot;Το άθροισμα είναι: {total}&quot;)</code></pre>
+      <ul class="answers-list">
+        <li class="answer-option" data-type="single">
+          <input type="radio" name="q5" id="q5a" value="A">
+          <label class="answer-label" for="q5a">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Το άθροισμα είναι: [1, 2, 3, 4, 5]</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q5" id="q5b" value="B">
+          <label class="answer-label" for="q5b">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Το άθροισμα είναι: 15</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q5" id="q5c" value="C">
+          <label class="answer-label" for="q5c">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Το άθροισμα είναι: 5</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q5" id="q5d" value="D">
+          <label class="answer-label" for="q5d">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Error</span>
+          </label>
+        </li>
+      </ul>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q5-theory')">📚 Θεωρία</button>
+<button class="helper-btn" onclick="togglePanel('q5-hint')">💡 Υπόδειξη</button>
+<button class="helper-btn" onclick="togglePanel('q5-book')">📖 Βιβλίο</button>
+      </div>
+      <div class="panel panel-theory" id="q5-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+Η συνάρτηση <code>sum()</code> υπολογίζει το άθροισμα όλων των στοιχείων ενός iterable.
+Το f-string (<code>f"..."</code>) επιτρέπει την ενσωμάτωση μεταβλητών μέσα σε strings.
+        </div>
+      </div>
+<div class="panel panel-hint" id="q5-hint" style="display:none">
+        <div class="panel-content">
+          💡 <strong>Υπόδειξη:</strong> Πρόσθεσε τους αριθμούς: 1 + 2 + 3 + 4 + 5 = ?
+        </div>
+      </div>
+<div class="panel panel-book" id="q5-book" style="display:none">
+        <div class="panel-content">
+          <h4>📖 Αναφορά Βιβλίου</h4>
+<p><strong>Πληροφορική Β&#x27; Λυκείου</strong></p>
+<p>Κεφάλαιο 4 - Λίστες</p>
+<p class="book-pages">
+            <a href="./books/pliroforiki_b_lykeiou.pdf#page=87" target="_blank" class="book-link">
+              📄 Σελίδες 87-92 → Άνοιγμα PDF
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q6" data-type="multiple" data-points="2.0" data-correct="A,B,C,E">
+      <div class="question-header">
+        <span class="question-number">6</span>
+        <span class="question-type">Πολλαπλής επιλογής</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Ποιοι από τους παρακάτω είναι έγκυροι τύποι δεδομένων στην Python;</p><p>---</p></div>
+      
+      
+      <ul class="answers-list">
+        <li class="answer-option" data-type="multiple">
+          <input type="checkbox" name="q6" id="q6a" value="A">
+          <label class="answer-label" for="q6a">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>int</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="multiple">
+          <input type="checkbox" name="q6" id="q6b" value="B">
+          <label class="answer-label" for="q6b">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>str</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="multiple">
+          <input type="checkbox" name="q6" id="q6c" value="C">
+          <label class="answer-label" for="q6c">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>float</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="multiple">
+          <input type="checkbox" name="q6" id="q6d" value="D">
+          <label class="answer-label" for="q6d">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>char</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="multiple">
+          <input type="checkbox" name="q6" id="q6e" value="E">
+          <label class="answer-label" for="q6e">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>bool</code></span>
+          </label>
+        </li>
+<li class="answer-option" data-type="multiple">
+          <input type="checkbox" name="q6" id="q6f" value="F">
+          <label class="answer-label" for="q6f">
+            <span class="answer-marker"></span>
+            <span class="answer-text"><code>double</code></span>
+          </label>
+        </li>
+      </ul>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q6-theory')">📚 Θεωρία</button>
+      </div>
+      <div class="panel panel-theory" id="q6-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+<p>Η Python έχει τους εξής βασικούς τύπους:
+- <code>int</code> - Ακέραιοι αριθμοί
+- <code>float</code> - Δεκαδικοί αριθμοί
+- <code>str</code> - Συμβολοσειρές
+- <code>bool</code> - Λογικές τιμές (True/False)
+- <code>list</code>, <code>tuple</code>, <code>dict</code>, <code>set</code> - Συλλογές</p><p>Η Python <strong>δεν</strong> έχει <code>char</code> (χρησιμοποιεί str) ούτε <code>double</code> (χρησιμοποιεί float).</p>
+        </div>
+      </div>
+    </div>
+
+<div class="section-header" id="section_3">
+      <h2 class="section-title">📖 Ενότητα 3: Προχωρημένα</h2>
+    </div>
+
+<div class="question-card" id="q7" data-type="matching" data-points="3.0" data-correct='{"item1": "42", "item2": "3.14", "item3": "\"Hello\"", "item4": "True"}'>
+      <div class="question-header">
+        <span class="question-number">7</span>
+        <span class="question-type">Αντιστοίχιση</span>
+        <span class="question-points">3.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Αντιστοιχίστε κάθε τύπο δεδομένων με το παράδειγμά του:</p><p>---</p></div>
+      
+      
+      <div class="matching-container">
+        <div class="matching-row" data-item="item1">
+          <div class="matching-item"><code>int</code></div>
+          <div class="matching-arrow">→</div>
+          <select class="matching-select" data-item="item1">
+            <option value="">-- Επιλέξτε --</option>
+            <option class="matching-option" value="42">42</option>
+            <option class="matching-option" value="3.14">3.14</option>
+            <option class="matching-option" value="&quot;Hello&quot;">&quot;Hello&quot;</option>
+            <option class="matching-option" value="True">True</option>
+
+          </select>
+          <span class="match-feedback"></span>
+        </div>
+<div class="matching-row" data-item="item2">
+          <div class="matching-item"><code>float</code></div>
+          <div class="matching-arrow">→</div>
+          <select class="matching-select" data-item="item2">
+            <option value="">-- Επιλέξτε --</option>
+            <option class="matching-option" value="42">42</option>
+            <option class="matching-option" value="3.14">3.14</option>
+            <option class="matching-option" value="&quot;Hello&quot;">&quot;Hello&quot;</option>
+            <option class="matching-option" value="True">True</option>
+
+          </select>
+          <span class="match-feedback"></span>
+        </div>
+<div class="matching-row" data-item="item3">
+          <div class="matching-item"><code>str</code></div>
+          <div class="matching-arrow">→</div>
+          <select class="matching-select" data-item="item3">
+            <option value="">-- Επιλέξτε --</option>
+            <option class="matching-option" value="42">42</option>
+            <option class="matching-option" value="3.14">3.14</option>
+            <option class="matching-option" value="&quot;Hello&quot;">&quot;Hello&quot;</option>
+            <option class="matching-option" value="True">True</option>
+
+          </select>
+          <span class="match-feedback"></span>
+        </div>
+<div class="matching-row" data-item="item4">
+          <div class="matching-item"><code>bool</code></div>
+          <div class="matching-arrow">→</div>
+          <select class="matching-select" data-item="item4">
+            <option value="">-- Επιλέξτε --</option>
+            <option class="matching-option" value="42">42</option>
+            <option class="matching-option" value="3.14">3.14</option>
+            <option class="matching-option" value="&quot;Hello&quot;">&quot;Hello&quot;</option>
+            <option class="matching-option" value="True">True</option>
+
+          </select>
+          <span class="match-feedback"></span>
+        </div>
+      </div>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q7-theory')">📚 Θεωρία</button>
+<button class="helper-btn" onclick="togglePanel('q7-hint')">💡 Υπόδειξη</button>
+      </div>
+      <div class="panel panel-theory" id="q7-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+Παραδείγματα τύπων:
+- <code>int</code>: 42, -10, 0, 1000
+- <code>float</code>: 3.14, -0.5, 2.0
+- <code>str</code>: "Hello", 'Python', ""
+- <code>bool</code>: True, False
+        </div>
+      </div>
+<div class="panel panel-hint" id="q7-hint" style="display:none">
+        <div class="panel-content">
+          💡 <strong>Υπόδειξη:</strong> - Οι ακέραιοι δεν έχουν υποδιαστολή
+- Τα strings έχουν εισαγωγικά
+- Οι booleans είναι True ή False
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q8" data-type="ordering" data-points="2.0" data-correct="1,2,3,4">
+      <div class="question-header">
+        <span class="question-number">8</span>
+        <span class="question-type">Ταξινόμηση</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Βάλε τα βήματα debugging στη σωστή σειρά:</p><p>---</p></div>
+      
+      
+      <div class="ordering-list">
+        <div class="ordering-item" data-id="step2">
+          <span class="ordering-handle">☰</span>
+          <span class="ordering-text">Κατανόησε την αιτία</span>
+          <div class="order-buttons">
+            <button class="order-up">▲</button>
+            <button class="order-down">▼</button>
+          </div>
+          <span class="order-feedback"></span>
+        </div>
+<div class="ordering-item" data-id="step1">
+          <span class="ordering-handle">☰</span>
+          <span class="ordering-text">Εντόπισε το σφάλμα</span>
+          <div class="order-buttons">
+            <button class="order-up">▲</button>
+            <button class="order-down">▼</button>
+          </div>
+          <span class="order-feedback"></span>
+        </div>
+<div class="ordering-item" data-id="step4">
+          <span class="ordering-handle">☰</span>
+          <span class="ordering-text">Δοκίμασε ξανά</span>
+          <div class="order-buttons">
+            <button class="order-up">▲</button>
+            <button class="order-down">▼</button>
+          </div>
+          <span class="order-feedback"></span>
+        </div>
+<div class="ordering-item" data-id="step3">
+          <span class="ordering-handle">☰</span>
+          <span class="ordering-text">Διόρθωσε τον κώδικα</span>
+          <div class="order-buttons">
+            <button class="order-up">▲</button>
+            <button class="order-down">▼</button>
+          </div>
+          <span class="order-feedback"></span>
+        </div>
+      </div>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q8-theory')">📚 Θεωρία</button>
+      </div>
+      <div class="panel panel-theory" id="q8-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+Η διαδικασία debugging ακολουθεί συγκεκριμένα βήματα:
+1. <strong>Εντοπισμός:</strong> Βρες πού συμβαίνει το σφάλμα
+2. <strong>Κατανόηση:</strong> Καταλάβε γιατί συμβαίνει
+3. <strong>Διόρθωση:</strong> Διόρθωσε τον κώδικα
+4. <strong>Επαλήθευση:</strong> Δοκίμασε ότι λειτουργεί
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q9" data-type="fillblank" data-points="2.0" data-correct='{"blank1": "range", "blank2": "print"}'>
+      <div class="question-header">
+        <span class="question-number">9</span>
+        <span class="question-type">Συμπλήρωση</span>
+        <span class="question-points">2.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Συμπλήρωσε τον κώδικα:</p><p>---</p></div>
+      
+      
+      <div class="fillblank-container">
+        <pre style="background: var(--code-bg); padding: 1.5em; border-radius: 12px; line-height: 2;">
+<code class="language-python"># For loop
+for i in <input type="text" class="fillblank-input" data-blank="blank1" style="width: 80px;">(5):
+    <input type="text" class="fillblank-input" data-blank="blank2" style="width: 80px;">(i)</code></pre>
+      </div>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q9-hint')">💡 Υπόδειξη</button>
+      </div>
+      <div class="panel panel-hint" id="q9-hint" style="display:none">
+        <div class="panel-content">
+          💡 <strong>Υπόδειξη:</strong> Η <code>range()</code> δημιουργεί ακολουθία αριθμών, η <code>print()</code> εμφανίζει τιμές.
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q10" data-type="shortanswer" data-points="4.0" data-sample-answer="def factorial(n):&#10;    if n &lt;= 1:&#10;        return 1&#10;    return n * factorial(n - 1)">
+      <div class="question-header">
+        <span class="question-number">10</span>
+        <span class="question-type">Ανοικτή</span>
+        <span class="question-points">4.0 βαθμοί</span>
+      </div>
+      <div class="question-text"><p>Γράψε μια συνάρτηση Python που υπολογίζει το παραγοντικό ενός αριθμού:</p><p>---</p></div>
+      
+      
+      <div class="shortanswer-container">
+        <textarea class="shortanswer-textarea" placeholder="Γράψτε την απάντησή σας..."></textarea>
+      </div>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q10-hint')">💡 Υπόδειξη</button>
+<button class="helper-btn" onclick="togglePanel('q10-theory')">📚 Θεωρία</button>
+      </div>
+      <div class="panel panel-hint" id="q10-hint" style="display:none">
+        <div class="panel-content">
+          💡 <strong>Υπόδειξη:</strong> Μπορείς να χρησιμοποιήσεις αναδρομή: n! = n × (n-1)!
+Βάση: 0! = 1! = 1
+        </div>
+      </div>
+<div class="panel panel-theory" id="q10-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+<p>Το παραγοντικό n! ορίζεται ως:
+- n! = n × (n-1) × (n-2) × ... × 2 × 1
+- 0! = 1 (εξ ορισμού)</p><p>Παραδείγματα:
+- 5! = 5 × 4 × 3 × 2 × 1 = 120
+- 3! = 3 × 2 × 1 = 6</p>
+        </div>
+      </div>
+    </div>
+
+<div class="question-card" id="q11" data-type="truefalse" data-points="1.0" data-correct="A">
+      <div class="question-header">
+        <span class="question-number">11</span>
+        <span class="question-type">Σωστό/Λάθος</span>
+        <span class="question-points">1.0 βαθμός</span>
+      </div>
+      <div class="question-text">Η Python είναι case-sensitive (διακρίνει πεζά-κεφαλαία).</div>
+      
+      
+      <ul class="answers-list">
+        <li class="answer-option" data-type="single">
+          <input type="radio" name="q11" id="q11a" value="A">
+          <label class="answer-label" for="q11a">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Σωστό</span>
+          </label>
+        </li>
+<li class="answer-option" data-type="single">
+          <input type="radio" name="q11" id="q11b" value="B">
+          <label class="answer-label" for="q11b">
+            <span class="answer-marker"></span>
+            <span class="answer-text">Λάθος</span>
+          </label>
+        </li>
+      </ul>
+      
+      <div class="helper-buttons">
+        <button class="helper-btn" onclick="togglePanel('q11-theory')">📚 Θεωρία</button>
+      </div>
+      <div class="panel panel-theory" id="q11-theory" style="display:none">
+        <div class="panel-content">
+          <h4>📚 Θεωρία</h4>
+Η Python είναι <strong>case-sensitive</strong>, που σημαίνει ότι:
+- <code>myVar</code> ≠ <code>myvar</code> ≠ <code>MYVAR</code>
+- <code>Print()</code> θα δώσει error (η σωστή είναι <code>print()</code>)
+        </div>
+      </div>
+    </div>
+    
+    <div class="navigation">
+      <button class="nav-btn" id="btnPrev" onclick="navigateQuestion(-1)" style="display:none">
+        ← Προηγούμενη
+      </button>
+      <button class="nav-btn btn-submit" id="btnSubmit" onclick="submitQuiz()">
+        ✓ Υποβολή Quiz
+      </button>
+      <button class="nav-btn" id="btnNext" onclick="navigateQuestion(1)" style="display:none">
+        Επόμενη →
+      </button>
+    </div>
+    
+    <div class="results-container hidden" id="resultsContainer">
+      <h2>📊 Αποτελέσματα</h2>
+      
+      <div class="results-circle">
+        <svg viewBox="0 0 180 180">
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#667eea"/>
+              <stop offset="100%" stop-color="#764ba2"/>
+            </linearGradient>
+          </defs>
+          <circle class="circle-bg" cx="90" cy="90" r="80"/>
+          <circle class="circle-progress" id="progressCircle" cx="90" cy="90" r="80"/>
+        </svg>
+        <div class="results-percentage" id="resultsPercentage">0%</div>
+      </div>
+      
+      <div class="results-score" id="resultsScore">0/0 βαθμοί</div>
+      
+      <div class="results-stats">
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--success);" id="statCorrect">0</div>
+          <div class="stat-label">✓ Σωστές</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--warning);" id="statPartial">0</div>
+          <div class="stat-label">◐ Μερικές</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--error);" id="statWrong">0</div>
+          <div class="stat-label">✗ Λάθος</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--text-muted);" id="statUnanswered">0</div>
+          <div class="stat-label">○ Κενές</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--accent);" id="statPoints">0/0</div>
+          <div class="stat-label">⭐ Βαθμοί</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--primary-start);" id="statGrade">0/20</div>
+          <div class="stat-label">📊 Βαθμός</div>
+        </div>
+      </div>
+      
+      <div class="results-actions">
+        <button class="nav-btn btn-review" onclick="reviewAnswers()" style="">🔍 Επισκόπηση</button>
+<button class="nav-btn btn-print" onclick="printResults()" style="">🖨️ Εκτύπωση</button>
+<button class="nav-btn btn-pdf" onclick="exportPDF()" style="">📄 PDF</button>
+<button class="nav-btn btn-markdown" onclick="exportMarkdown()" style="">📝 Markdown</button>
+<button class="nav-btn btn-email" onclick="sendEmail()" style="">📧 Email</button>
+<button class="nav-btn btn-drive" onclick="shareToCloud()" style="">☁️ Drive</button>
+<button class="nav-btn btn-docs" onclick="exportToGoogleDocs()" style="">📑 G.Docs</button>
+<button class="nav-btn btn-restart" onclick="restartQuiz()" style="">🔄 Ξανά</button>
+      </div>
+    </div>
+    
+  </div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- External Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/sql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/css.min.js"></script>
+  
+  <!-- Quiz Core JS -->
+  <script src="quiz-core.js"></script>
+  
+  <!-- Quiz Configuration & Initialization -->
+  <script>
+    const quizConfig = {"timeLimit": 25, "shuffleQuestions": false, "shuffleAnswers": true, "showExplanations": "after_submit", "buttons": {"review": true, "print": true, "pdf": true, "markdown": true, "email": true, "drive": true, "docs": true, "restart": true}};
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      loadTheme();
+      initQuiz(quizConfig);
+      document.getElementById('totalQNav').textContent = quizState.totalQuestions;
+    });
+  </script>
+
+</body>
+</html>
